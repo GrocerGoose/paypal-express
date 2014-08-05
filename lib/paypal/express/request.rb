@@ -52,12 +52,13 @@ module Paypal
         Response.new response
       end
 
-      def capture!(authorization_id, amount, currency_code)
+      def capture!(authorization_id, amount, params={})
         params = {
           :AUTHORIZATIONID => authorization_id,
           :COMPLETETYPE => "Complete",
           :AMT => amount,
-          :CURRENCYCODE => currency_code
+          :CURRENCYCODE => params[:currency_code] || "USD",
+          :NOTE => params[:note]
         }
 
         response = self.request :DoCapture, params
